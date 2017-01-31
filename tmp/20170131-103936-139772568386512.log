@@ -1,0 +1,84 @@
+Content-Type: multipart/alternative;
+ boundary="===============6452010801036575165=="
+MIME-Version: 1.0
+Subject: Account activation on example.com
+From: webmaster@localhost
+To: jameswhitakerwork@gmail.com
+Date: Tue, 31 Jan 2017 10:39:36 -0000
+Message-ID: <20170131103936.15919.6465@ubuntu>
+
+--===============6452010801036575165==
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+
+
+You (or someone pretending to be you) have asked to register an account at
+example.com.  If this wasn't you, please ignore this email
+and your address will be removed from our records.
+
+
+To activate this account, please click the following link within the next
+28 days:
+
+
+http://example.com/accounts/activate/818055d36b440a8e52b8ba6f07d4174388e0fb71/
+
+
+Sincerely,
+example.com Management
+
+
+
+
+
+--===============6452010801036575165==
+MIME-Version: 1.0
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>example.com registration</title>
+</head>
+
+<body>
+<p>
+    
+    You (or someone pretending to be you) have asked to register an account at
+    example.com.  If this wasn't you, please ignore this email
+    and your address will be removed from our records.
+    
+</p>
+<p>
+    
+    To activate this account, please click the following link within the next
+    28 days:
+    
+</p>
+
+<p>
+    <a href="http://example.com/accounts/activate/818055d36b440a8e52b8ba6f07d4174388e0fb71/">
+        example.com/accounts/activate/818055d36b440a8e52b8ba6f07d4174388e0fb71/
+    </a>
+</p>
+<p>
+    
+    Sincerely,
+    example.com Management
+    
+</p>
+</body>
+
+</html>
+
+
+
+
+--===============6452010801036575165==--
+
+-------------------------------------------------------------------------------

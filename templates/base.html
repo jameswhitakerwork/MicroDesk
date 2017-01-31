@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+
+
+    <head lang="en">
+
+        <meta charset="utf-8" />
+
+        <title>
+            Microdesk - 
+            {% block head %}
+                Enterprise Web App
+            {% endblock %}
+        </title>
+
+    </head>
+
+
+    <body>
+    <div>
+        {% block title %}
+            This is the default title.
+        {% endblock %}
+        </div>
+
+        <div>
+            {% block content %}
+                <!-- Page specific content goes here -->
+                This is body_block's default content.
+            {% endblock %}
+        </div>
+
+        <div>
+            <a href="{% url 'index' %}">Home</a>
+        </div>
+        <hr />
+
+    </body>
+    
+</html>
+
