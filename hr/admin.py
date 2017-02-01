@@ -11,7 +11,7 @@ class StaffAdmin(admin.ModelAdmin):
         'first_name',
         'staff_type',
         'position',
-        'under_contract'
+        'active_contract'
     )
 
     list_filter = ['staff_type', 'last_name']
@@ -19,7 +19,13 @@ class StaffAdmin(admin.ModelAdmin):
 
 
 class PositionAdmin(admin.ModelAdmin):
-    list_display = ('title', 'duty_station', 'program', 'reports_to')
+    list_display = (
+        'title',
+        'duty_station',
+        'program',
+        'reports_to',
+        'active_contract'
+    )
     list_filter = ['duty_station', 'program', 'reports_to']
 
 

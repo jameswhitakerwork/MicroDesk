@@ -121,7 +121,7 @@ class Staff(models.Model):
         print 'name has been changed to ' + self.first_name
         super(Staff, self).save(*args, **kwargs)
 
-    def under_contract(self):
+    def active_contract(self):
         c = Contract.objects.get(staff=self)
         if c:
             t = timezone.now().date()
@@ -136,7 +136,8 @@ class Staff(models.Model):
         else:
             return None
 
-    under_contract.boolean = True
+    active_contract.boolean = True
+
 
 class Position(models.Model):
     """
@@ -150,7 +151,7 @@ class Position(models.Model):
     reports_to = models.ForeignKey('Position', blank=True, null=True)
     tor = models.CharField(max_length=1024)
     start_date = models.DateField()
-    expected_need_ntil = models.DateField(blank=True, null=True)
+    expected_need_until = models.DateField(blank=True, null=True)
     expected_monthly_rate = models.IntegerField()
     wbs = models.CharField(max_length=32)
     status = models.ForeignKey(Position_Status)
@@ -160,6 +161,16 @@ class Position(models.Model):
 
     def __unicode__(self):
         return self.title
+
+    def active_contract(self):
+        c = Contract.objects.get(position=self)
+        if c:
+            t = timezone.now().date()
+            return c.start_date <= t <= c.end_date
+        else:
+            return False
+
+    active_contract.boolean = True
 
 
 class Contract(models.Model):

@@ -63,6 +63,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_countries',
     'hr',
+    # 'bootstrap3',
+    'bootstrap_ui',
 
 ]
 
@@ -153,4 +155,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [STATIC_DIR, ]
+STATICFILES_DIRS = []
+STATIC_ROOT = STATIC_DIR
+
+# Default settings
+DJANGO_BOOTSTRAP_UI_THEME = 'bootswatch-paper'
