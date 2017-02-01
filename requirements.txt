@@ -1,0 +1,10 @@
+appdirs==1.4.0
+Django==1.10.5
+django-countries==4.0
+django-material==0.12.3
+django-registration-redux==1.4
+olefile==0.44
+packaging==16.8
+Pillow==4.0.0
+pyparsing==2.1.10
+six==1.10.0

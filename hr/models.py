@@ -4,6 +4,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django_countries.fields import CountryField
 
+from django.utils import timezone
+import datetime
+
+
 # Create your models here.
 
 
@@ -12,7 +16,8 @@ class Simple_Model(models.Model):
     Models where just a simple name is required
     can inherit from this model
     """
-    name = models.CharField(max_length=32)
+    name = models.CharField(max_length=32, unique=True)
+
 
     def __unicode__(self):
         return self.name
@@ -43,7 +48,8 @@ class Contract_Type(Simple_Model):
 
 
 class Position_Status(Simple_Model):
-    pass
+    class Meta:
+        verbose_name_plural = 'Position Statuses'
 
 
 class Duty_Station(Simple_Model):
@@ -95,16 +101,42 @@ class Staff(models.Model):
     duty_zip_code = models.CharField(max_length=8, blank=True, null=True)
     un_warden_zone = models.ForeignKey(Warden_Zone, blank=True, null=True)
 
+    class Meta:
+        verbose_name_plural = '   Staff'
+        unique_together = ('first_name', 'last_name')
+
     def __unicode__(self):
-        return self.first_name + self.last_name.upper()
+        return self.first_name + ' ' + self.last_name.upper()
+
+    def save(self, *args, **kwargs):
+        # change name to Lower UPPER
+        self.last_name = self.last_name.upper()
+        n = self.first_name
+        print 'name is ' + n
+        n1 = n[0]
+        n2 = n[1:]
+        n1 = n1.upper()
+        n2 = n2.lower()
+        self.first_name = n1 + n2
+        print 'name has been changed to ' + self.first_name
+        super(Staff, self).save(*args, **kwargs)
 
     def under_contract(self):
         c = Contract.objects.get(staff=self)
         if c:
-            return 'Yes'
+            t = timezone.now().date()
+            return c.start_date <= t <= c.end_date
         else:
-            return 'No'
+            return False
 
+    def position(self):
+        p = Position.objects.get(staff=self.id)
+        if p:
+            return p.title
+        else:
+            return None
+
+    under_contract.boolean = True
 
 class Position(models.Model):
     """
@@ -114,6 +146,7 @@ class Position(models.Model):
     duty_station = models.ForeignKey(Duty_Station)
     program = models.ForeignKey(Program)
     title = models.CharField(max_length=64, unique=True)
+    staff = models.ForeignKey(Staff, blank=True)
     reports_to = models.ForeignKey('Position', blank=True, null=True)
     tor = models.CharField(max_length=1024)
     start_date = models.DateField()
@@ -121,6 +154,9 @@ class Position(models.Model):
     expected_monthly_rate = models.IntegerField()
     wbs = models.CharField(max_length=32)
     status = models.ForeignKey(Position_Status)
+
+    class Meta:
+        verbose_name_plural = '  Positions'
 
     def __unicode__(self):
         return self.title
@@ -156,6 +192,9 @@ class Contract(models.Model):
     duty_station_orientation = models.BooleanField(default=False)
     photo = models.BooleanField(default=False)
     iom_un_id = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name_plural = ' Contracts'
 
     def __unicode__(self):
         return "Contract " + self.contract_code

@@ -6,8 +6,16 @@ from .models import *
 
 
 class StaffAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'staff_type', 'under_contract')
+    list_display = (
+        'last_name',
+        'first_name',
+        'staff_type',
+        'position',
+        'under_contract'
+    )
+
     list_filter = ['staff_type', 'last_name']
+    search_fields = ('last_name',)
 
 
 class PositionAdmin(admin.ModelAdmin):
