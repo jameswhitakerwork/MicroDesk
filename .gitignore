@@ -5,6 +5,8 @@ env
 /env
 mdenv
 /mdenv
+mdenv/
+env/
 db.sqlite3
 /static
 .DS_Store

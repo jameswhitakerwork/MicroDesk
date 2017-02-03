@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block body-content %}
+
+<div class="page header">
+    <h1>{{ staff.first_name }} {{ staff.last_name }}</h1>
+    <h2>{{ position.program }} {{ position.title }}</h2>
+</div>
+
+<div>
+    <img src="/static/flags/{{ countryflag }}.gif">           {% if staff.active_contract %}<span class="label label-success">Active Contract</span>{% else %}<span class="label label-default">No Contract</span>{% endif %}
+</div>
+
+<div>
+    <img src="/media/{{ staff.photo }}">
+</div>
+
+<div>
+    {% if contract_set %}
+        <h2> Contracts </h2>
+        {% for c in contract_set %}
+            <h4><a href="#"><strong>Contract {{ c.contract_code }} - {{ c.get_program }} - {{ c.get_position_title }} - {{c.get_duty_station }}</strong></a></h4>
+            <h4>Start : {{ c.start_date }}</h4>
+            <h4>End : {{ c.end_date }}</h4>
+            <h4>Action After Expiration: {{ c.action_after_expiration }}</h4>
+            <h4>Task Progress: </h4>
+            <div class="progress progress-striped active">
+            <div class="progress-bar" style="width:{{ c.tasks_progress }}%"></div>
+            </div>
+            <div>
+            {% if c.tasks_completed %}<p><strong>All contract tasks are completed.</strong></p>
+            {% else %}<p><strong>There are unfinished tasks for this contract.</strong></p>
+            {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <h2> There are no contracts assigned to this staff member. </h2>
+    {% endif %}
+</div>
+
+</div>
+
+
+
+{% endblock %}

@@ -65,7 +65,7 @@ INSTALLED_APPS = [
     'hr',
     # 'bootstrap3',
     'bootstrap_ui',
-
+    'django_tables2',
 ]
 
 MIDDLEWARE = [
@@ -155,8 +155,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = []
-STATIC_ROOT = STATIC_DIR
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"), '/var/www/static/', )
+
+# STATIC_ROOT = STATIC_DIR
 
 # Default settings
 DJANGO_BOOTSTRAP_UI_THEME = 'bootswatch-paper'

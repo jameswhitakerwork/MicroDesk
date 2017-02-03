@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load django_tables2 %}
+
+{% block body-content %}
+
+<h1>Staff List</h1>
+
+{% endblock %}
+
+
+
+
+{% block table-content %}
+
+{% render_table table %}
+
+{% endblock %}

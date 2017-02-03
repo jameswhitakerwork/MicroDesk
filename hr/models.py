@@ -209,3 +209,38 @@ class Contract(models.Model):
 
     def __unicode__(self):
         return "Contract " + self.contract_code
+
+    def tasks_progress(self):
+        # returns progress out of 100
+        # used for progress bars
+        percent = (
+            getattr(self, 'personal_history') +
+            getattr(self, 'medical_clearance') +
+            getattr(self, 'policy_and_conduct') +
+            getattr(self, 'iom_email') +
+            getattr(self, 'basic_field_security') +
+            getattr(self, 'advanced_field_security') +
+            getattr(self, 'travel_profile') +
+            getattr(self, 'proof_of_life') +
+            getattr(self, 'ses_initiated') +
+            getattr(self, 'duty_station_orientation') +
+            getattr(self, 'photo') +
+            getattr(self, 'iom_un_id')
+        ) * (100 / 12)
+        return int(percent)
+
+    def tasks_completed(self):
+        # returns True if all tasks completed
+        return self.tasks_progress == 100
+
+    def get_program(self):
+        p = Position.objects.get(id=self.position_id)
+        return p.program
+
+    def get_position_title(self):
+        p = Position.objects.get(id=self.position_id)
+        return p.title
+
+    def get_duty_station(self):
+        p = Position.objects.get(id=self.position_id)
+        return p.duty_station
