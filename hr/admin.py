@@ -4,6 +4,9 @@ from django.contrib import admin
 
 from .models import *
 
+class PositionInline(admin.TabularInline):
+    model = Position
+
 
 class StaffAdmin(admin.ModelAdmin):
     list_display = (
@@ -14,8 +17,14 @@ class StaffAdmin(admin.ModelAdmin):
         'active_contract'
     )
 
-    list_filter = ['staff_type', 'last_name']
+    list_editable = (
+        'staff_type',
+    )
+
+    list_filter = ['staff_type', ]
     search_fields = ('last_name',)
+
+    inlines = [PositionInline, ]
 
 
 class PositionAdmin(admin.ModelAdmin):
@@ -26,6 +35,13 @@ class PositionAdmin(admin.ModelAdmin):
         'reports_to',
         'active_contract'
     )
+
+    list_editable = (
+        'duty_station',
+        'program',
+        'reports_to',
+    )
+
     list_filter = ['duty_station', 'program', 'reports_to']
 
 

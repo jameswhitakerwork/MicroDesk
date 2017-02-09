@@ -3,9 +3,12 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from django_countries.fields import CountryField
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
 
 from django.utils import timezone
 import datetime
+from datetime import timedelta
 
 
 # Create your models here.
@@ -102,7 +105,7 @@ class Staff(models.Model):
     un_warden_zone = models.ForeignKey(Warden_Zone, blank=True, null=True)
 
     class Meta:
-        verbose_name_plural = '   Staff'
+        verbose_name_plural = '   STAFF'
         unique_together = ('first_name', 'last_name')
 
     def __unicode__(self):
@@ -122,12 +125,13 @@ class Staff(models.Model):
         super(Staff, self).save(*args, **kwargs)
 
     def active_contract(self):
-        c = Contract.objects.get(staff=self)
-        if c:
-            t = timezone.now().date()
-            return c.start_date <= t <= c.end_date
-        else:
-            return False
+        contracts = Contract.objects.all().filter(staff=self)
+        if contracts:
+            for c in contracts:
+                t = timezone.now().date()
+                if c.start_date <= t <= c.end_date:
+                    return True
+        return False
 
     def position(self):
         p = Position.objects.get(staff=self.id)
@@ -135,6 +139,17 @@ class Staff(models.Model):
             return p.title
         else:
             return None
+
+    def program(self):
+        p = Position.objects.get(staff=self.id)
+        if p:
+            return p.program
+        else:
+            return None
+
+    def get_position(self):
+        p = Position.objects.get(staff=self.id)
+        return p
 
     active_contract.boolean = True
 
@@ -147,7 +162,7 @@ class Position(models.Model):
     duty_station = models.ForeignKey(Duty_Station)
     program = models.ForeignKey(Program)
     title = models.CharField(max_length=64, unique=True)
-    staff = models.ForeignKey(Staff, blank=True)
+    staff = models.OneToOneField(Staff, blank=True)
     reports_to = models.ForeignKey('Position', blank=True, null=True)
     tor = models.CharField(max_length=1024)
     start_date = models.DateField()
@@ -157,7 +172,7 @@ class Position(models.Model):
     status = models.ForeignKey(Position_Status)
 
     class Meta:
-        verbose_name_plural = '  Positions'
+        verbose_name_plural = '  POSITIONS'
 
     def __unicode__(self):
         return self.title
@@ -205,7 +220,7 @@ class Contract(models.Model):
     iom_un_id = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name_plural = ' Contracts'
+        verbose_name_plural = ' CONTRACTS'
 
     def __unicode__(self):
         return "Contract " + self.contract_code
@@ -227,11 +242,12 @@ class Contract(models.Model):
             getattr(self, 'photo') +
             getattr(self, 'iom_un_id')
         ) * (100 / 12)
-        return int(percent)
+        print int(int(percent) / 10 + 1) * 10
+        return int(int(percent) / 10 + 1) * 10 
 
     def tasks_completed(self):
         # returns True if all tasks completed
-        return self.tasks_progress == 100
+        return self.tasks_progress() >= 99
 
     def get_program(self):
         p = Position.objects.get(id=self.position_id)
@@ -244,3 +260,22 @@ class Contract(models.Model):
     def get_duty_station(self):
         p = Position.objects.get(id=self.position_id)
         return p.duty_station
+
+    def is_active(self):
+        t = timezone.now().date()
+        return self.start_date <= t <= self.end_date
+
+    def get_monthly_rate(self):
+        r = getattr(self, 'monthly_rate')
+        return "{:,}".format(r)
+
+    def clean(self):
+        if self.start_date > self.end_date:
+            raise ValidationError({
+                'end_date': _('Contract end date must be after the start date')
+            })
+
+    def ending_soon(self):
+        t = timezone.now().date()
+        d = self.end_date
+        return (t > d - timedelta(days=300)) and (t < d)
