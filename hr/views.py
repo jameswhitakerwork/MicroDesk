@@ -3,8 +3,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
+from django.views.generic.edit import FormView
 from .models import *
 from .filters import *
+from .forms import StaffForm, ContractForm, PositionForm
 import django_tables2 as tables
 from django_tables2.utils import A
 # Tables
@@ -71,3 +73,41 @@ def staff_view(request, staff_id):
     context_dict['contract_set'] = c
     context_dict['countryflag'] = s.nationality.__unicode__().lower()
     return render(request, 'hr/staff_view.html', context_dict)
+
+
+def staff_form(request):
+    # if this is a post request, process the form data
+    if request.method == 'POST':
+        # create form and populate it with request
+        form = StaffForm(request.POST)
+        # check whether form is valid
+        if form.is_valid():
+            # process data in form.cleaned_data
+            # redirect to url
+            return render(request, 'hr/staff_list.html', {})
+    # if a GET, create blank form
+    else:
+        form = StaffForm()
+
+    return render(request, 'hr/generic_form.html', {'form': form})
+
+
+class ContractView(FormView):
+    template_name = 'hr/generic_form.html'
+    form_class = ContractForm
+    success_url = '/hr/staff_list'
+
+    def form_valid(self):
+        # when valid form is posted
+        print 'contract added'
+        return super(ContractView, self).form_valid(form)
+
+class PositionView(FormView):
+    template_name = 'hr/generic_form.html'
+    form_class = PositionForm
+    success_url = '/hr/staff_list'
+
+    def form_valid(self):
+        # when valid form is posted
+        print 'position added'
+        return super(ContractView, self).form_valid(form)

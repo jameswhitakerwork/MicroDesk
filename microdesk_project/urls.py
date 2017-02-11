@@ -27,5 +27,5 @@ urlpatterns = [
 
     url(r'^hr/', include('hr.urls')),
 
-    url(r'^accounts/', include('registration.backends.default.urls'))
+    url(r'^accounts/', include('registration.backends.default.urls')),
 ]

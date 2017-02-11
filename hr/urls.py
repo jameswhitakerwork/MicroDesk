@@ -14,4 +14,16 @@ urlpatterns = [
 
     url(r'^staff/$', views.staff_list, name='staff_list'),
 
+    url(r'^staff-form/$', views.staff_form, name='staff_form'),
+
+    url(
+        r'^contract-form/$',
+        views.ContractView.as_view(),
+        name='contract_form'),
+
+    url(
+        r'^position-form/$',
+        views.PositionView.as_view(),
+        name='position_form'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -205,7 +205,7 @@ class Contract(models.Model):
     grade = models.ForeignKey(Grade)
     monthly_rate = models.IntegerField()
     total_cost = models.IntegerField()
-    action_after_expiration = models.ForeignKey(Action)
+    renew_after_expires = models.BooleanField()
     personal_history = models.BooleanField(default=False)
     medical_clearance = models.BooleanField(default=False)
     policy_and_conduct = models.BooleanField(default=False)
@@ -278,4 +278,10 @@ class Contract(models.Model):
     def ending_soon(self):
         t = timezone.now().date()
         d = self.end_date
-        return (t > d - timedelta(days=300)) and (t < d)
+        ending_soon = t > d - timedelta(days=300)
+        contracts = Contract.objects.filter(staff=self.staff)
+        next_contract = False
+        for c in contracts:
+            if t < c.start_date:
+                next_contract = True
+        return ending_soon and not next_contract

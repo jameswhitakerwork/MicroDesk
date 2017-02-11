@@ -30,7 +30,7 @@
             {% if c.is_active %}<span class="label label-success">Active</span>{% else %}<span class="label label-default">Inactive</span>
             {% endif %}
 
-            {% if c.ending_soon and c.action_after_expiration != "1" %}
+            {% if c.ending_soon and c.renew_after_expires %}
                 <div class="alert alert-dismissible alert-danger">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
                 <strong>This contract is ending soon!</strong>  <p>It has been set for renewal, but there is no new contract yet.</p>

@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     # 'bootstrap3',
     'bootstrap_ui',
     'django_tables2',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -98,6 +99,8 @@ TEMPLATES = [
         },
     },
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 WSGI_APPLICATION = 'microdesk_project.wsgi.application'
 

@@ -79,8 +79,9 @@
             {% block sidebar-content %}
                 <div class="list-group">
                 <a href="{% url 'staff_list' %}" class="list-group-item">Staff List</a>
-                <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-                <a href="#" class="list-group-item">Morbi leo risus</a>
+                <a href="{% url 'staff_form' %}" class="list-group-item">Add Staff</a>
+                <a href="{% url 'contract_form' %}" class="list-group-item">Add Contract</a>
+                <a href="{% url 'position_form' %}" class="list-group-item">Add Position</a>
                 </div>
             {% endblock %}
         </div>
