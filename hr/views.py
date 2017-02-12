@@ -3,12 +3,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import FormView
+from django.views.generic.edit import CreateView, UpdateView
 from .models import *
 from .filters import *
 from .forms import StaffForm, ContractForm, PositionForm
 import django_tables2 as tables
 from django_tables2.utils import A
+
+
 # Tables
 
 
@@ -62,7 +64,7 @@ def staff_list(request):
 def staff_view(request, staff_id):
     context_dict = {}
     s = Staff.objects.get(id=staff_id)
-    p = Position.objects.get(staff_id=staff_id)
+    p = s.get_position()
     try:
         c = Contract.objects.filter(staff_id=staff_id).order_by('-start_date')
     except:
@@ -75,39 +77,39 @@ def staff_view(request, staff_id):
     return render(request, 'hr/staff_view.html', context_dict)
 
 
-def staff_form(request):
-    # if this is a post request, process the form data
-    if request.method == 'POST':
-        # create form and populate it with request
-        form = StaffForm(request.POST)
-        # check whether form is valid
-        if form.is_valid():
-            # process data in form.cleaned_data
-            # redirect to url
-            return render(request, 'hr/staff_list.html', {})
-    # if a GET, create blank form
-    else:
-        form = StaffForm()
-
-    return render(request, 'hr/generic_form.html', {'form': form})
+class StaffCreate(CreateView):
+    template_name = 'hr/generic_form.html'
+    form_class = StaffForm
+    # success_url = '/hr/staff'
 
 
-class ContractView(FormView):
+class ContractCreate(CreateView):
     template_name = 'hr/generic_form.html'
     form_class = ContractForm
-    success_url = '/hr/staff_list'
+    success_url = '/hr/staff'
 
-    def form_valid(self):
-        # when valid form is posted
-        print 'contract added'
-        return super(ContractView, self).form_valid(form)
 
-class PositionView(FormView):
+class PositionCreate(CreateView):
     template_name = 'hr/generic_form.html'
     form_class = PositionForm
-    success_url = '/hr/staff_list'
+    success_url = '/hr/staff'
 
-    def form_valid(self):
-        # when valid form is posted
-        print 'position added'
-        return super(ContractView, self).form_valid(form)
+
+class StaffUpdate(UpdateView):
+    model = Staff
+    form_class = StaffForm
+
+
+class PositionUpdate(UpdateView):
+    model = Position
+    form_class = PositionForm
+
+
+class ContractUpdate(UpdateView):
+    model = Contract
+    form_class = ContractForm
+
+
+class PositionView(DetailView):
+    model = Position
+    template_name = 'hr/position_view.html'

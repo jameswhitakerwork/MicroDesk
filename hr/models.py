@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django_countries.fields import CountryField
 from django.core.exceptions import ValidationError
@@ -20,7 +22,6 @@ class Simple_Model(models.Model):
     can inherit from this model
     """
     name = models.CharField(max_length=32, unique=True)
-
 
     def __unicode__(self):
         return self.name
@@ -111,6 +112,9 @@ class Staff(models.Model):
     def __unicode__(self):
         return self.first_name + ' ' + self.last_name.upper()
 
+    def get_absolute_url(self):
+        return '/hr/staff/%i/' % self.id
+
     def save(self, *args, **kwargs):
         # change name to Lower UPPER
         self.last_name = self.last_name.upper()
@@ -125,7 +129,10 @@ class Staff(models.Model):
         super(Staff, self).save(*args, **kwargs)
 
     def active_contract(self):
-        contracts = Contract.objects.all().filter(staff=self)
+        try:
+            contracts = Contract.objects.all().filter(staff=self)
+        except:
+            return None
         if contracts:
             for c in contracts:
                 t = timezone.now().date()
@@ -133,43 +140,44 @@ class Staff(models.Model):
                     return True
         return False
 
-    def position(self):
-        p = Position.objects.get(staff=self.id)
-        if p:
-            return p.title
-        else:
-            return None
+    active_contract.boolean = True
 
-    def program(self):
-        p = Position.objects.get(staff=self.id)
-        if p:
-            return p.program
-        else:
+    def get_contract(self):
+        try:
+            contracts = Contract.objects.filter(staff=self)
+        except:
             return None
+        if contracts:
+            t = timezone.now().date()
+            for c in contracts:
+                if c.start_date <= t <= c.end_date:
+                    return c
+        return False
 
     def get_position(self):
-        p = Position.objects.get(staff=self.id)
-        return p
-
-    active_contract.boolean = True
+        try:
+            p = Position.objects.filter(contract__staff=self)[0]
+            return p
+        except:
+            return None
 
 
 class Position(models.Model):
     """
     Position details such as grade, WBS, status
     """
+    # staff = models.ForeignKey(Staff)
     position_code = models.CharField(max_length=16)
     duty_station = models.ForeignKey(Duty_Station)
     program = models.ForeignKey(Program)
     title = models.CharField(max_length=64, unique=True)
-    staff = models.OneToOneField(Staff, blank=True)
     reports_to = models.ForeignKey('Position', blank=True, null=True)
-    tor = models.CharField(max_length=1024)
+    tor = models.FileField(blank=True, null=True)
     start_date = models.DateField()
     expected_need_until = models.DateField(blank=True, null=True)
     expected_monthly_rate = models.IntegerField()
     wbs = models.CharField(max_length=32)
-    status = models.ForeignKey(Position_Status)
+    notes = models.CharField(max_length=2048, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = '  POSITIONS'
@@ -186,6 +194,10 @@ class Position(models.Model):
             return False
 
     active_contract.boolean = True
+
+    def get_expected_rate(self):
+        r = getattr(self, 'expected_monthly_rate')
+        return "{:,}".format(r)
 
 
 class Contract(models.Model):
@@ -206,17 +218,17 @@ class Contract(models.Model):
     monthly_rate = models.IntegerField()
     total_cost = models.IntegerField()
     renew_after_expires = models.BooleanField()
-    personal_history = models.BooleanField(default=False)
-    medical_clearance = models.BooleanField(default=False)
-    policy_and_conduct = models.BooleanField(default=False)
+    personal_history = models.FileField(blank=True, null=True)
+    medical_clearance = models.FileField(blank=True, null=True)
+    policy_and_conduct = models.FileField(blank=True, null=True)
     iom_email = models.BooleanField(default=False)
-    basic_field_security = models.BooleanField(default=False)
-    advanced_field_security = models.BooleanField(default=False)
-    travel_profile = models.BooleanField(default=False)
-    proof_of_life = models.BooleanField(default=False)
+    basic_field_security = models.FileField(blank=True, null=True)
+    advanced_field_security = models.FileField(blank=True, null=True)
+    travel_profile = models.FileField(blank=True, null=True)
+    proof_of_life = models.FileField(blank=True, null=True)
     ses_initiated = models.BooleanField(default=False)
     duty_station_orientation = models.BooleanField(default=False)
-    photo = models.BooleanField(default=False)
+    photo = models.FileField(blank=True, null=True)
     iom_un_id = models.BooleanField(default=False)
 
     class Meta:
@@ -228,38 +240,15 @@ class Contract(models.Model):
     def tasks_progress(self):
         # returns progress out of 100
         # used for progress bars
-        percent = (
-            getattr(self, 'personal_history') +
-            getattr(self, 'medical_clearance') +
-            getattr(self, 'policy_and_conduct') +
-            getattr(self, 'iom_email') +
-            getattr(self, 'basic_field_security') +
-            getattr(self, 'advanced_field_security') +
-            getattr(self, 'travel_profile') +
-            getattr(self, 'proof_of_life') +
-            getattr(self, 'ses_initiated') +
-            getattr(self, 'duty_station_orientation') +
-            getattr(self, 'photo') +
-            getattr(self, 'iom_un_id')
-        ) * (100 / 12)
-        print int(int(percent) / 10 + 1) * 10
-        return int(int(percent) / 10 + 1) * 10 
+        percent = 50  # come back to calculate percentage progress
+        return percent
 
     def tasks_completed(self):
         # returns True if all tasks completed
         return self.tasks_progress() >= 99
 
-    def get_program(self):
-        p = Position.objects.get(id=self.position_id)
-        return p.program
-
-    def get_position_title(self):
-        p = Position.objects.get(id=self.position_id)
-        return p.title
-
-    def get_duty_station(self):
-        p = Position.objects.get(id=self.position_id)
-        return p.duty_station
+    def get_position(self):
+        return self.position
 
     def is_active(self):
         t = timezone.now().date()

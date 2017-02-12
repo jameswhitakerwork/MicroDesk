@@ -4,17 +4,14 @@ from django.contrib import admin
 
 from .models import *
 
-class PositionInline(admin.TabularInline):
-    model = Position
-
+class ContractAdmin(admin.ModelAdmin):
+    pass
 
 class StaffAdmin(admin.ModelAdmin):
     list_display = (
         'last_name',
         'first_name',
         'staff_type',
-        'position',
-        'active_contract'
     )
 
     list_editable = (
@@ -24,8 +21,6 @@ class StaffAdmin(admin.ModelAdmin):
     list_filter = ['staff_type', ]
     search_fields = ('last_name',)
 
-    inlines = [PositionInline, ]
-
 
 class PositionAdmin(admin.ModelAdmin):
     list_display = (
@@ -33,7 +28,6 @@ class PositionAdmin(admin.ModelAdmin):
         'duty_station',
         'program',
         'reports_to',
-        'active_contract'
     )
 
     list_editable = (
@@ -45,23 +39,12 @@ class PositionAdmin(admin.ModelAdmin):
     list_filter = ['duty_station', 'program', 'reports_to']
 
 
-class ContractAdmin(admin.ModelAdmin):
-    list_display = ('position', 'staff',
-                    'contract_type',
-                    'grade',
-                    'start_date',
-                    'end_date')
-    date_hierarchy = 'end_date'
-
-
+admin.site.register(Contract, ContractAdmin)
 admin.site.register(Staff, StaffAdmin)
 admin.site.register(Position, PositionAdmin)
-admin.site.register(Contract, ContractAdmin)
-
 admin.site.register(Shirt_Size)
 admin.site.register(Staff_Type)
 admin.site.register(Warden_Zone)
-admin.site.register(Action)
 admin.site.register(Grade)
 admin.site.register(Contract_Type)
 admin.site.register(Position_Status)

@@ -3,18 +3,25 @@
 
 {% block body-content %}
 
-<div class="page header">
-    <h1 id='name'>{{ staff.first_name }} {{ staff.last_name }}</h1>
-    <h2>{{ position.program }} {{ position.title }}</h2>
-    
-</div>
+<ul class="breadcrumb">
+  <li><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="{% url 'staff_list' %}">HR</a></li>
+  <li class="active">Staff Details</li>
+</ul>
 
-<div>
+<div class="panel panel-default">
+  <div class="panel-heading"><h1>Staff Details</h1></div>
+  <div class="panel-body">
+
+    <div class="col-md-8">
+    <h2 id='name'>{{ staff.first_name }} {{ staff.last_name }}</h2>
+    <h3>{{ position.program }} {{ position.title }}</h3>
     <img src="/static/flags/{{ countryflag }}.gif">           {% if staff.active_contract %}<span class="label label-success">Active Contract</span>{% else %}<span class="label label-default">No Contract</span>{% endif %}
-</div>
+    </div>
 
-<div>
-    <img src="/media/{{ staff.photo }}">
+    <div class="col-md-4"><img src="/media/{{ staff.photo }}"></div>
+
+  </div>
 </div>
 
 <hr>
@@ -23,12 +30,16 @@
     {% if contract_set %}
         <h2> Contracts </h2>
         {% for c in contract_set %}
-        <div class="jumbotron">
-
-            <h4><a href="#"><strong>Contract {{ c.contract_code }} - {{ c.get_program }} - {{ c.get_position_title }} - {{c.get_duty_station }}</strong></a></h4>
-
-            {% if c.is_active %}<span class="label label-success">Active</span>{% else %}<span class="label label-default">Inactive</span>
+        <div class="panel panel-default">
+        <div class="panel-heading">
+            {% if c.is_active %}
+            <span class="label label-success">Active</span>{% else %}<span class="label label-default">Inactive</span>
             {% endif %}
+
+            <h4><a href="#"><strong>Contract {{ c.contract_code }} - {{ c.get_position.program }} - {{ c.get_position.title }} - {{c.get_position.duty_station }}</strong></a></h4>
+        </div>
+
+        <div class="panel-body">
 
             {% if c.ending_soon and c.renew_after_expires %}
                 <div class="alert alert-dismissible alert-danger">
@@ -37,11 +48,11 @@
                 </div>
             {% endif %}
 
-            <h4>Start : {{ c.start_date }}</h4>
-            <h4>End : {{ c.end_date }}</h4>
-            <h4>Rate : ${{ c.get_monthly_rate }} pcm</h4>
-            <h4>Action After Expiration: <strong>{{ c.action_after_expiration }}</strong></h4>
-            <h4>Task Progress: </h4>
+            <p>Start : {{ c.start_date }}</p>
+            <p>End : {{ c.end_date }}</p>
+            <p>Rate : ${{ c.get_monthly_rate }} pcm</p>
+            <p>Renew After Expiration: <strong>{{ c.renew_after_expires }}</strong></p>
+            <p>Task Progress: </p>
             <div class="progress progress-striped active">
             <div class="progress-bar" style="width:{{ c.tasks_progress }}%"></div>
             </div>
@@ -51,11 +62,15 @@
             {% endif %}
             </div>
         </div>
-        <hr>
+
+        </div>
+
         {% endfor %}
     {% else %}
         <h2> There are no contracts assigned to this staff member. </h2>
     {% endif %}
+
+    <a href="{% url 'staff_update' staff.id %}" class="btn btn-primary">Edit Staff Details</a>
 </div>
 
 <div><h2>

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block body-content %}
+
+<ul class="breadcrumb">
+  <li><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="{% url 'staff_list' %}">HR</a></li>
+  <li class="active">Position Details</li>
+</ul>
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h1>Position Details</h1></div>
+  <div class="panel-body">
+        <h3>{{ object.title }}</h3>
+        <h3>{{ object.program }} : {{ object.duty_station }}</h3>
+        <h3>Reports to: {{ object.reports_to }}</h3>
+  </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-3">
+        <div class="panel panel-default">
+          <div class="panel-heading">Start Date</div>
+          <div class="panel-body">
+            {{ object.start_date }}
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="panel panel-default">
+          <div class="panel-heading">Expected End Date</div>
+          <div class="panel-body">
+            {{ object.expected_need_until }}
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="panel panel-default">
+          <div class="panel-heading">Expected Monthly Rate</div>
+          <div class="panel-body">
+            ${{ object.get_expected_rate }}
+          </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="panel panel-default">
+          <div class="panel-heading">WBS</div>
+          <div class="panel-body">
+            {{ object.wbs }}
+          </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">Notes</div>
+          <div class="panel-body">
+            {{ object.notes }}
+          </div>
+        </div>
+    </div>
+
+<a href="{% url 'position_update' object.id %}" class="btn btn-primary">Edit Position Details</a>
+
+<hr>
+
+{% endblock %}

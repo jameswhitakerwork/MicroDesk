@@ -78,10 +78,11 @@
         <div class="col-md-2">
             {% block sidebar-content %}
                 <div class="list-group">
+                <a href="" class="list-group-item">Overview</a>
                 <a href="{% url 'staff_list' %}" class="list-group-item">Staff List</a>
                 <a href="{% url 'staff_form' %}" class="list-group-item">Add Staff</a>
-                <a href="{% url 'contract_form' %}" class="list-group-item">Add Contract</a>
                 <a href="{% url 'position_form' %}" class="list-group-item">Add Position</a>
+                <a href="{% url 'contract_form' %}" class="list-group-item">Add Contract</a>
                 </div>
             {% endblock %}
         </div>
