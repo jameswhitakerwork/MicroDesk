@@ -1,0 +1,51 @@
+{% extends "hr_base.html" %}
+{% load staticfiles %}
+
+{% block body-content %}
+
+<ul class="breadcrumb">
+  <li><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="{% url 'staff_list' %}">HR</a></li>
+  <li class="active">Contract Details</li>
+</ul>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h1>Contract Details</h1></div>
+  <div class="panel-body">
+        <h3>Contract {{ object.contract_code }} - {{ object.get_position.program }} - {{ object.get_position.duty_station }}</h3>
+        <h3>{{ object.staff }}</h3>
+  </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">Start Date</div>
+            <div class="panel-body">{{ object.start_date }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">End Date</div>
+            <div class="panel-body">{{ object.end_date }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">Grade</div>
+            <div class="panel-body">{{ object.grade }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">Monthly Rate</div>
+            <div class="panel-body">${{ object.get_monthly_rate }}</div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "procurement_base.html" %}
+{% load staticfiles %}
+{% load django_tables2 %}
+<link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
+{% load crispy_forms_tags %}
+{% block body-content %}
+
+
+<ul class="breadcrumb">
+  <li><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="{% url 'dashboard' %}">Procurement</a></li>
+  <li class="active">Update Item</li>
+</ul>
+
+
+<div class="alert alert-dismissible alert-warning">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <h4>Warning!</h4>
+  <p>Making any changes to this item will delete any signatures and restart the approval process.</p>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h1>Edit Item</h1></div>
+  <div class="panel-body">
+
+  <form method="post">{% csrf_token %}
+    {{ form|crispy }}
+  <input type="submit" value="Save"/>
+  </form>
+
+{% endblock %}

@@ -6,9 +6,10 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from .models import *
 from .filters import *
-from .forms import StaffForm, ContractForm, PositionForm
+from .forms import StaffForm, ContractForm, PositionForm, SignatureForm
 import django_tables2 as tables
 from django_tables2.utils import A
+from jsignature.utils import draw_signature
 
 
 # Tables
@@ -94,6 +95,11 @@ class PositionCreate(CreateView):
     form_class = PositionForm
     success_url = '/hr/staff'
 
+class SignatureCreate(CreateView):
+    template_name = 'hr/signature_form.html'
+    form_class = SignatureForm
+    success_url = '/hr/staff'
+
 
 class StaffUpdate(UpdateView):
     model = Staff
@@ -113,3 +119,53 @@ class ContractUpdate(UpdateView):
 class PositionView(DetailView):
     model = Position
     template_name = 'hr/position_view.html'
+
+
+class ContractView(DetailView):
+    model = Contract
+    template_name = 'hr/contract_view.html'
+
+
+class SignatureView(DetailView):
+    model = JSignatureModel
+    template_name = 'hr/signature_view.html'
+
+
+@login_required
+def view_signature(request):
+    print request.POST
+    form = SignatureForm(request.POST or None)
+    print form
+    if form.is_valid():
+        print 'valid form'
+        print form.cleaned_data.get('signature')
+        signature = form.cleaned_data.get('signature')
+        if signature:
+            print 'signature found'
+            # as an image
+            signature_picture = draw_signature(signature)
+            print signature_picture
+            j = JSignatureModel()
+            j.signature = signature
+            j.save()
+
+            return render(
+                request,
+                'hr/signature_form.html',
+                {
+                    'signature': signature,
+                    'form': form
+                }
+            )
+    print 'form not valid'
+    return render(
+        request,
+        'hr/signature_form.html',
+        {
+            'form': form
+        }
+    )
+
+
+def test_signature(request):
+    return render(request, 'hr/signature_form.html', {})

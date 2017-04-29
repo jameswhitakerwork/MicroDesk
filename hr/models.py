@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django_countries.fields import CountryField
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
+from jsignature.mixins import JSignatureFieldsMixin
 
 from django.utils import timezone
 import datetime
@@ -16,56 +17,101 @@ from datetime import timedelta
 # Create your models here.
 
 
-class Simple_Model(models.Model):
-    """
-    Models where just a simple name is required
-    can inherit from this model
-    """
+class Shirt_Size(models.Model):
     name = models.CharField(max_length=32, unique=True)
 
     def __unicode__(self):
         return self.name
 
 
-class Shirt_Size(Simple_Model):
-    pass
+class Staff_Type(models.Model):
+    name = models.CharField(max_length=32, unique=True)
+
+    def __unicode__(self):
+        return self.name
 
 
-class Staff_Type(Simple_Model):
-    pass
+class Warden_Zone(models.Model):
+    name = models.CharField(max_length=32, unique=True)
+
+    def __unicode__(self):
+        return self.name
 
 
-class Warden_Zone(Simple_Model):
-    pass
+class Action(models.Model):
+    name = models.CharField(max_length=32, unique=True)
+
+    def __unicode__(self):
+        return self.name
 
 
-class Action(Simple_Model):
-    pass
+class Grade(models.Model):
+    name = models.CharField(max_length=32, unique=True)
+
+    def __unicode__(self):
+        return self.name
 
 
-class Grade(Simple_Model):
-    pass
+class Contract_Type(models.Model):
+    name = models.CharField(max_length=32, unique=True)
 
+    def __unicode__(self):
+        return self.name
 
-class Contract_Type(Simple_Model):
-    pass
+class Position_Status(models.Model):
+    name = models.CharField(max_length=32, unique=True)
 
+    def __unicode__(self):
+        return self.name
 
-class Position_Status(Simple_Model):
     class Meta:
         verbose_name_plural = 'Position Statuses'
 
 
-class Duty_Station(Simple_Model):
-    pass
+class Duty_Station(models.Model):
+    name = models.CharField(max_length=32, unique=True)
+
+    def __unicode__(self):
+        return self.name
 
 
-class Program(Simple_Model):
-    pass
+class Program(models.Model):
+    name = models.CharField(max_length=32, unique=True)
+
+    def __unicode__(self):
+        return self.name
 
 
-class Gender(Simple_Model):
-    pass
+class Gender(models.Model):
+    name = models.CharField(max_length=32, unique=True)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Department(models.Model):
+    name = models.CharField(max_length=32, unique=True)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Mission(models.Model):
+    name = models.CharField(max_length=32, unique=True)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Office(models.Model):
+    name = name = models.CharField(max_length=32, unique=True)
+
+    def __unicode__(self):
+        return self.name
+
+
+class JSignatureModel(JSignatureFieldsMixin):
+    name = models.CharField(max_length=128, blank=True, null=True)
 
 
 class Staff(models.Model):
@@ -230,6 +276,7 @@ class Contract(models.Model):
     duty_station_orientation = models.BooleanField(default=False)
     photo = models.FileField(blank=True, null=True)
     iom_un_id = models.BooleanField(default=False)
+    signature = models.ForeignKey(JSignatureModel, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = ' CONTRACTS'
@@ -267,10 +314,12 @@ class Contract(models.Model):
     def ending_soon(self):
         t = timezone.now().date()
         d = self.end_date
+        renew = getattr(self, 'renew_after_expires')
         ending_soon = t > d - timedelta(days=300)
         contracts = Contract.objects.filter(staff=self.staff)
         next_contract = False
         for c in contracts:
             if t < c.start_date:
                 next_contract = True
-        return ending_soon and not next_contract
+        return ending_soon and (not next_contract) and renew
+

@@ -27,5 +27,7 @@ urlpatterns = [
 
     url(r'^hr/', include('hr.urls')),
 
+    url(r'^procurement/', include('procurement.urls')),
+
     url(r'^accounts/', include('registration.backends.default.urls')),
 ]

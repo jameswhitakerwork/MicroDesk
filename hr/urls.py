@@ -15,6 +15,8 @@ urlpatterns = [
 
     url(r'^staff/$', views.staff_list, name='staff_list'),
 
+    url(r'^test$', views.view_signature, name='test_signature'),
+
     url(
         r'^staff-form/$',
         login_required(views.StaffCreate.as_view()),
@@ -29,6 +31,11 @@ urlpatterns = [
         r'^position-form/$',
         login_required(views.PositionCreate.as_view()),
         name='position_form'),
+
+    url(
+        r'^signature-create/$',
+        login_required(views.SignatureCreate.as_view()),
+        name='signature_create'),
 
     url(
         r'^staff-update/(?P<pk>[0-9]+)/$',
@@ -49,5 +56,17 @@ urlpatterns = [
         r'^position/(?P<pk>[0-9]+)/$',
         login_required(views.PositionView.as_view()),
         name='position_view'),
+
+    url(
+        r'^contract/(?P<pk>[0-9]+)/$',
+        login_required(views.ContractView.as_view()),
+        name='contract_view'),
+
+    url(
+        r'^signature/(?P<pk>[0-9]+)/$',
+        login_required(views.SignatureView.as_view()),
+        name='signature_view'),
+
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "hr_base.html" %}
 {% load staticfiles %}
 
 {% block body-content %}
@@ -6,7 +6,8 @@
 <ul class="breadcrumb">
   <li><a href="{% url 'index' %}">Home</a></li>
   <li><a href="{% url 'staff_list' %}">HR</a></li>
-  <li class="active">Staff Details</li>
+    <li><a href="{% url 'staff_list' %}">Staff List</a></li>
+  <li class="active">View Staff Member</li>
 </ul>
 
 <div class="panel panel-default">
@@ -73,8 +74,8 @@
     <a href="{% url 'staff_update' staff.id %}" class="btn btn-primary">Edit Staff Details</a>
 </div>
 
-<div><h2>
-
+<div>
+<hr>
 </div>
 
 

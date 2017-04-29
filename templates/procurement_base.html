@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block sidebar-content %}
+    <div class="list-group">
+    <a href="{% url 'dashboard' %}" class="list-group-item">Overview</a>
+    <a href="{% url 'purchaserequest_create' %}" class="list-group-item">Add New PR</a>
+    <a href="" class="list-group-item">My PRs</a>
+    <a href="{% url 'pr_list' %}" class="list-group-item">PR Search</a>
+    </div>
+{% endblock %}
+
+{% block body-content %}
+
+{% endblock %}

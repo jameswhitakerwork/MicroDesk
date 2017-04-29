@@ -1,0 +1,19 @@
+{% extends 'hr_base.html' %}
+{% load staticfiles %}
+
+{% block body-content %}
+
+
+{{ form.media }}
+
+<form action="test" method="POST">
+    {% for field in form %}
+        {{ field.label_tag }}
+        {{ field }}
+    {% endfor %}
+    <input type="submit" value="Save"/>
+    {% csrf_token %}
+
+    
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "procurement_base.html" %}
+{% load staticfiles %}
+
+
+<ul class="breadcrumb">
+  <li><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="{% url 'dashboard' %}">Procurement</a></li>
+  <li class="active">Sign PR</li>
+</ul>
+
+
+{% block body-content %}
+
+
+{{ form.media }}
+
+<form action="{% url 'add_signature' pk sig_type %}" method="POST">
+    {% for field in form %}
+        {{ field.label_tag }}
+        {{ field }}
+    {% endfor %}
+    <input type="submit" value="Save"/>
+    {% csrf_token %}
+
+    
+
+{% endblock %}

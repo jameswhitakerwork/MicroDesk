@@ -1,0 +1,197 @@
+{% extends "procurement_base.html" %}
+{% load staticfiles %}
+{% load django_tables2 %}
+<link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
+
+{% block body-content %}
+
+<ul class="breadcrumb">
+  <li><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="{% url 'dashboard' %}">Procurement</a></li>
+  <li class="active">View PR</li>
+</ul>
+
+
+
+
+
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h1>Purchase Request: {{ pr.pr_no }}</h1>
+  <strong>Status: {{ pr.status.status }}</div>
+  <div class="panel-body">
+
+
+  <div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-default">
+        <div class="panel-heading">Created by:</div>
+        <div class="panel-body">{{ pr.pr_creator }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+        <div class="panel-heading">Required By:</div>
+        <div class="panel-body">{{ pr.pr_requisitioner }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+        <div class="panel-heading">Department:</div>
+        <div class="panel-body">{{ pr.pr_department }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+        <div class="panel-heading">Office:</div>
+        <div class="panel-body">{{ pr.pr_office }}</div>
+        </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+        <div class="panel-heading">Date Prepared:</div>
+        <div class="panel-body">{{ pr.pr_date_prepared }}</div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+        <div class="panel-heading">Date Needed:</div>
+        <div class="panel-body">{{ pr.pr_date_needed }}</div>
+        </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+        <div class="panel-heading">Justification:</div>
+        <div class="panel-body">{{ pr.pr_justification }}</div>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<table class="table table-hover">
+<thead>
+    <tr>
+    <th>#</th>
+    <th>Description</th>
+    <th>Asset Class</th>
+    <th>WBS</th>
+    <th>Qty</th>
+    <th>UoM</th>
+    <th>Price</th>
+    <th>Total Price</th>
+    </tr>
+<tbody>
+    {% for item in item_set %}
+    <tr>
+        <td><a href="{% url 'purchaseitem_update' item.id %}">{{ forloop.counter }}</a></td>
+        <td><a href="{% url 'purchaseitem_update' item.id %}">{{ item.description }}</a></td>
+        <td><a href="{% url 'purchaseitem_update' item.id %}">{{ item.asset_class }}</a></td>
+        <td><a href="{% url 'purchaseitem_update' item.id %}">{{ item.wbs }}</a></td>
+        <td><a href="{% url 'purchaseitem_update' item.id %}">{{ item.qty }}</a></td>
+        <td><a href="{% url 'purchaseitem_update' item.id %}">{{ item.uom }}</a></td>
+        <td><a href="{% url 'purchaseitem_update' item.id %}">{{ item.price }}</a></td>
+        <td><a href="{% url 'purchaseitem_update' item.id %}">{{ item.totalprice }}</a></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><strong>TOTAL</strong></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><strong>{{ pr.get_value }}</strong></td>
+
+    {% endfor %}
+</tbody>
+</tr>
+</tbody>
+</thead>
+</table>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<hr>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-default">
+        <div class="panel-heading">Requested Signature</div>
+        {% if pr.sig1 %}
+        <div class="panel-body">
+        Signed by: {{ pr.sig1.user }}
+        Date: {{ pr.sig1.date }}
+        </div>
+        {% else %}
+        <a href="{% url 'add_signature' pr.id 'request' %}" class="btn btn-primary btn-lg">Sign Here</a>
+        {% endif %}
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+        <div class="panel-heading">Need Confirmed Signature</div>
+        {% if pr.sig2 %}
+        <div class="panel-body">
+        Signed by: {{ pr.sig2.user }}
+        Date: {{ pr.sig2.date }}
+        </div>
+        {% else %}
+        <a href="{% url 'add_signature' pr.id 'confirm_need' %}" class="btn btn-primary btn-lg">Sign Here</a>
+        {% endif %}
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+        <div class="panel-heading">Funds Available Signature</div>
+        {% if pr.sig3 %}
+        <div class="panel-body">
+        Signed by: {{ pr.sig3.user }}
+        Date: {{ pr.sig3.date }}
+        </div>
+        {% else %}
+        <a href="{% url 'add_signature' pr.id 'funds_available' %}" class="btn btn-primary btn-lg">Sign Here</a>
+        {% endif %}
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+        <div class="panel-heading">Approved Signature</div>
+        {% if pr.sig4 %}
+        <div class="panel-body">
+        Signed by: {{ pr.sig4.user }}
+        Date: {{ pr.sig4.date }}
+        </div>
+        {% else %}
+        <a href="{% url 'add_signature' pr.id 'approved' %}" class="btn btn-primary btn-lg">Sign Here</a>
+        {% endif %}
+        </div>
+    </div>
+  </div>
+
+  </div>
+</div>
+
+
+{% endblock %}

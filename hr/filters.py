@@ -1,32 +1,41 @@
 import django_filters
-from django_filters import ChoiceFilter
+from django_filters import ChoiceFilter, BooleanFilter
 from .models import *
 
 
 class StaffFilter(django_filters.FilterSet):
-    PROGRAM_CHOICES = (
-        (1, 'TMRP'),
-        (2, 'CADRE')
-    )
+    programs = Program.objects.all()
+    ds = Duty_Station.objects.all()
+    PROGRAM_CHOICES = ((p.id, p.name) for p in programs)
+    DS_CHOICES = ((d.id, d.name) for d in ds)
 
-    program = ChoiceFilter(
-        name='program',
+    program_filter = ChoiceFilter(
+        label='program',
         method='filter_program',
         choices=PROGRAM_CHOICES
     )
 
+    duty_station_filter = ChoiceFilter(
+        label='duty station',
+        method='filter_duty_station',
+        choices=DS_CHOICES
+    )
+
+    active_contract_filter = BooleanFilter(
+        label='active contract',
+        method='filter_active_contract'
+    )
+
     def filter_program(self, queryset, name, value):
-        print 'passed queryset: '
-        print queryset
-        print 'passed choice value: '
-        print value
-        print 'test relationship lookup: '
-        print queryset.filter(contract__position__program__id=2)
-        print 'test value get: '
-        print Position.objects.filter(program_id=2)
-        print 'program lookup: '
-        print queryset.filter(contract__position__program__id=2)
-        return queryset.filter(contract__position__program__id=2)
+        return queryset.filter(contract__position__program__id=value)
+
+    def filter_duty_station(self, queryset, name, value):
+        print 'name: ' + name
+        return queryset.filter(contract__position__duty_station__id=value)
+
+    def filter_active_contract(self, queryset, name, value):
+        value = 1 - value
+        return queryset.filter(contract__isnull=value)
 
     class Meta:
         model = Staff

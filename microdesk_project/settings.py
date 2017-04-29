@@ -65,10 +65,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_countries',
     'hr',
+    'procurement',
     # 'bootstrap3',
     'bootstrap_ui',
     'django_tables2',
     'crispy_forms',
+    'jsignature'
 ]
 
 MIDDLEWARE = [

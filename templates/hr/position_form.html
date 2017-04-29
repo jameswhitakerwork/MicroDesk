@@ -1,12 +1,22 @@
-{% extends 'base.html' %}
+{% extends 'hr_base.html' %}
 
 {% block body-content %}
+
+<ul class="breadcrumb">
+  <li><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="{% url 'staff_list' %}">HR</a></li>
+  <li class="active">Add Position</li>
+</ul>
+
+<h2>Add Position</h2>
+
 <form method="POST">
 {% csrf_token %}
 <table>
 {{ form.as_p }}
 </table>
-<input type="submit" value="Submit" />
+<input type="submit" class="btn btn-primary" value="Submit" />
 </form>
+<hr>
 
 {% endblock %}

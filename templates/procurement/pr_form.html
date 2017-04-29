@@ -1,0 +1,65 @@
+{% extends "procurement_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block body-content %}
+<ul class="breadcrumb">
+  <li><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="{% url 'dashboard' %}">Procurement</a></li>
+  <li class="active">Create PR</li>
+</ul>
+
+<h2>Create Purchase Request Form</h2>
+
+
+<form method="POST">
+{% csrf_token %}
+<div class="panel panel-default">
+  <div class="panel-body">
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Purchase Request Information</h3>
+  </div>
+  <div class="panel-body">
+{% crispy f %}
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+{% for form in fs %}
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Item {{ forloop.counter }}</h3>
+      </div>
+      <div class="panel-body">
+        {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+            {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+      </div>
+    </div>
+{% endfor %}
+
+
+
+<input type="submit" class="btn btn-primary" value="Submit" />
+  </div>
+</div>
+</form>
+<hr>
+
+{% endblock %}
