@@ -17,6 +17,10 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
 from hr import views as hrviews
+from procurement import views as procurmentviews
+from assets import views as assetsviews
+from django.conf import settings
+from django.conf.urls.static import static
 
 admin.site.site_header = 'MicroDesk Administration'
 urlpatterns = [
@@ -29,5 +33,11 @@ urlpatterns = [
 
     url(r'^procurement/', include('procurement.urls')),
 
+    url(r'^assets/', include('assets.urls')),
+
     url(r'^accounts/', include('registration.backends.default.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

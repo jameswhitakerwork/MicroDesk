@@ -1,9 +1,14 @@
 appdirs==1.4.0
 Django==1.10.5
-django-bootstrap3
+django-bootstrap-ui==0.4.0
 django-countries==4.0
-django-material==0.12.3
+django-crispy-forms==1.6.1
+django-filter==1.0.1
+django-jsignature==0.8
 django-registration-redux==1.4
+django-tables2==1.3.0
+django-tag-parser==2.1
+dominate==2.1.17
 olefile==0.44
 packaging==16.8
 Pillow==4.0.0

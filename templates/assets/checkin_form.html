@@ -1,0 +1,26 @@
+{% extends 'assets_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block body-content %}
+<ul class="breadcrumb">
+  <li><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="{% url 'asset_list' %}">Assets</a></li>
+  <li class="active">Check In</li>
+</ul>
+
+<h2>Check In</h2>
+
+<h1>{{ asset }}</h1>
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+<div class="panel panel-default">
+  <div class="panel-body">
+{{ form|crispy }}
+<input type="submit" class="btn btn-primary" value="Submit" />
+  </div>
+</div>
+</form>
+<hr>
+
+{% endblock %}

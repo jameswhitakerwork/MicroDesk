@@ -49,7 +49,7 @@ SECRET_KEY = 'l***(oj$m4%a7nj4(dyotom(=$shb5nrtgh-30cds0^lj7ilec'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["67b99579.ngrok.io", "localhost"]
 
 
 # Application definition
@@ -66,11 +66,13 @@ INSTALLED_APPS = [
     'django_countries',
     'hr',
     'procurement',
+    'assets',
     # 'bootstrap3',
     'bootstrap_ui',
     'django_tables2',
     'crispy_forms',
-    'jsignature'
+    'jsignature',
+
 ]
 
 MIDDLEWARE = [

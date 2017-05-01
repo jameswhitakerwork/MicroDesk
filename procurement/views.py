@@ -36,11 +36,6 @@ class PRTable(tables.Table):
 
 @login_required
 def index(request):
-    messages.warning(
-        request,
-        "There are X contracts marked for review that are about to expire"
-    )
-
     return render(request, 'hr/index.html', {})
 
 

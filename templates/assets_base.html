@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block sidebar-content %}
+    <div class="list-group">
+    <a href="{% url 'asset_list' %}" class="list-group-item">Asset List</a>
+    <a href="{% url 'asset_create' %}" class="list-group-item">Create New Asset</a>
+    <a href="{% url 'download_assets' %}" class="list-group-item">Download</a>
+    </div>
+{% endblock %}
+
+{% block body-content %}
+
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends "assets_base.html" %}
+{% load staticfiles %}
+{% load media}
+{% load django_tables2 %}
+<link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
+
+{% block body-content %}
+
+<ul class="breadcrumb">
+  <li><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="{% url 'asset_list' %}">Assets</a></li>
+  <li class="active">View Asset</li>
+</ul>
+
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h1>{{ object }}</h1>
+    {% if object.assigned %}
+    <h2> Assigned to: {{object.assigned }}</h2>
+    {% else %}
+    <h2> Unassigned </h2>
+    {% endif %}
+  
+  </div>
+  <div class="panel-body">
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-default">
+        <div class="panel-heading">No:</div>
+        <div class="panel-body">{{ object.no }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+        <div class="panel-heading">Sub No:</div>
+        <div class="panel-body">{{ object.sub_no }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+        <div class="panel-heading">Capitalized:</div>
+        <div class="panel-body">{{ object.capitalized }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+        <div class="panel-heading">Asset Type:</div>
+        <div class="panel-body">{{ object.descr.name }}</div>
+        </div>
+    </div>
+  </div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+        <div class="panel-heading">Description:</div>
+        <div class="panel-body">{{ object.add_descr }}</div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+        <div class="panel-heading">Serial:</div>
+        <div class="panel-body">{{ object.serial }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+        <div class="panel-heading">Office:</div>
+        <div class="panel-body">{{ object.office.name }}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+        <div class="panel-heading">Program:</div>
+        <div class="panel-body">{{ object.program.name }}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+        <div class="panel-heading">Status:</div>
+        <div class="panel-body">{{ object.status }}</div>
+        </div>
+    </div>
+</div>
+
+
+  </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h1>History</h1></div>
+  <div class="panel-body">
+
+<table class="table table-striped table-hover ">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>In / Out</th>
+      <th>Staff</th>
+      <th>File</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for check in checks %}
+    <tr>
+      <td>{{ check.date }}</td>
+      <td>{{ check.check_type}}</td>
+      <td>{{ check.staff }}</td>
+      <td><a href="{{ MEDIA_URL }}{{ check.document }}">{{ check.document }}</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+  </div>
+</div>
+
+{% endblock %}

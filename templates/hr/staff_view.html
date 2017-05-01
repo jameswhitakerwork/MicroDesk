@@ -76,6 +76,13 @@
 
 <div>
 <hr>
+
+<h2>Assigned Assets</h2>
+{% for asset in asset_list %}
+<h3><a href="{% url 'asset_view' asset.id %}">{{ asset }}</a></h3> 
+{% endfor %}
+
+
 </div>
 
 

@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from .models import *
+from assets.models import Asset
 from .filters import *
 from .forms import StaffForm, ContractForm, PositionForm, SignatureForm
 import django_tables2 as tables
@@ -34,7 +35,6 @@ class StaffTable(tables.Table):
 
 @login_required
 def index(request):
-    messages.warning(request, "There are X contracts marked for review that are about to expire")
     return render(request, 'hr/index.html', {})
 
 
@@ -66,6 +66,11 @@ def staff_view(request, staff_id):
     context_dict = {}
     s = Staff.objects.get(id=staff_id)
     p = s.get_position()
+    assets = Asset.objects.all()
+    print assets
+    myassets = [a for a in assets if a.assigned() == s ]
+    print myassets
+
     try:
         c = Contract.objects.filter(staff_id=staff_id).order_by('-start_date')
     except:
@@ -74,6 +79,7 @@ def staff_view(request, staff_id):
     context_dict['staff'] = s
     context_dict['position'] = p
     context_dict['contract_set'] = c
+    context_dict['asset_list'] = myassets
     context_dict['countryflag'] = s.nationality.__unicode__().lower()
     return render(request, 'hr/staff_view.html', context_dict)
 

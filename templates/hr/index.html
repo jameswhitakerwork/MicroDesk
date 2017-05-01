@@ -4,18 +4,30 @@
 {% block page-content %}
 
 {% block head %}
-    Index
+    
 {% endblock %}
 
 {% block head-title %}
-    Index Page
+
 {% endblock %}
 
 {% block body-content %}
+<div class="col-xs-12" style="height:150px;"></div>
 
-    <h1>This is the index page.</h1>
-    <p>here I will add all sorts of shit.</p>
-    <h2>True story.</h2>
+<div class="col-md-1"></div>
+<div class="col-md-1"><a href="{% url 'staff_list' %}" class="btn btn-primary btn-lg">HR</a></div>
+<div class="col-md-1"></div>
+<div class="col-md-1"></div>
+<div class="col-md-1"><a href="{% url 'dashboard' %}" class="btn btn-success btn-lg">Procurement</a></div>
+<div class="col-md-1"></div>
+<div class="col-md-1"></div>
+<div class="col-md-1"><a href="{% url 'asset_list' %}" class="btn btn-info btn-lg">Assets</a></div>
+<div class="col-md-1"></div>
+<div class="col-md-1"></div>
+<div class="col-md-1"><a href="#" class="btn btn-warning btn-lg">Reports</a></div>
+<div class="col-md-1"></div>
+
+
 
 {% endblock %}
 

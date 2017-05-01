@@ -1,0 +1,60 @@
+{% extends "assets_base.html" %}
+{% load staticfiles %}
+{% load django_tables2 %}
+
+{% block body-content %}
+<link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
+
+<ul class="breadcrumb">
+  <li><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="{% url 'dashboard' %}">Assets</a></li>
+  <li class="active">Asset List</li>
+</ul>
+
+{% endblock %}
+
+{% block table-content %}
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h3>Asset Search</h3></div>
+  <div class="panel-body">
+        <form action="" method="get">
+            {{ f.form.as_p }}
+            <input type="submit" />
+        </form>
+  </div>
+</div>
+
+
+<table class="table table-striped table-hover ">
+    <thead>
+        <tr>
+        <th>Number</th>
+        <th>Type</th>
+        <th>Add. Description</th>
+        <th>Program</th>
+        <th>Office</th>
+        <th>Status</th>
+        <th>Assigned</th>
+        <th>Check Out</th>
+        <th>Check In</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for asset in f.qs %}
+        <tr>
+            <td><a href="{% url 'asset_view' asset.id %}">{{ asset.no }}</a></td>
+            <td>{{ asset.descr }}</td>
+            <td>{{ asset.add_descr }}</td>
+            <td>{{ asset.program.name }}</td>
+            <td>{{ asset.office.name }}</td>
+            <td>{{ asset.status }}</td>
+            <td>{{ asset.assigned }}</td>
+            <td>{% if not asset.assigned %}<a href="{% url 'checkout_create' asset.id %}">CHECK OUT</a>{% endif %}</td>
+            <td>{% if asset.assigned %}<a href="{% url 'checkin_create' asset.id %}">CHECK IN</a>{% endif %}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+
+{% endblock %}
