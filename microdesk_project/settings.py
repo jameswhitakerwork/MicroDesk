@@ -55,7 +55,7 @@ SECRET_KEY = 'l***(oj$m4%a7nj4(dyotom(=$shb5nrtgh-30cds0^lj7ilec'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["67b99579.ngrok.io", "localhost", "azure.com"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
