@@ -24,7 +24,7 @@ STATICFILES_DIRS = ('/var/www/MicroDesk/static/',)
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_ROOT = STATIC_DIR
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
 
 # media dirs
