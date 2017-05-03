@@ -108,9 +108,11 @@ def asset_list(request):
 @permission_required('assets.can_download_assets')
 def download_assets(request):
     response = HttpResponse(content_type='text/csv')
-    t = str(timezone.now())
     response['Content-Disposition'] = 'attachment; filename="Asset Data"'
     writer = csv.writer(response)
+    t = timezone.now()
+
+    writer.writerow(['Asset Tracker Export', t, '', '', '', '', '', ''])
 
     writer.writerow([
         'Asset No',
@@ -134,6 +136,28 @@ def download_assets(request):
             asset.office.name,
             asset.assigned(),
             asset.assigned().staff_id
+        ])
+
+    writer.writerow(['Asset Log Export', t, '', '', '', '', ])
+
+    writer.writerow([
+        'Asset No',
+        'Asset Type',
+        'Asset Description',
+        'Staff',
+        'Date',
+        'In / Out',
+    ])
+
+    checks = Check.objects.all()
+    for check in checks:
+        writer.writerow([
+            check.asset.no,
+            check.asset.descr,
+            check.asset.add_descr,
+            check.staff,
+            check.date,
+            check.check_type
         ])
 
     return response

@@ -31,4 +31,5 @@ urlpatterns = [
         r'^download-assets/',
         views.download_assets, name='download_assets'),
 
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

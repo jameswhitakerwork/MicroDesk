@@ -20,6 +20,12 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"), '/var/www/static/', )
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.10/howto/static-files/
+
+STATIC_ROOT = STATIC_DIR
+
+
 # media dirs
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
@@ -49,7 +55,7 @@ SECRET_KEY = 'l***(oj$m4%a7nj4(dyotom(=$shb5nrtgh-30cds0^lj7ilec'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["67b99579.ngrok.io", "localhost"]
+ALLOWED_HOSTS = ["67b99579.ngrok.io", "localhost", "azure.com"]
 
 
 # Application definition
@@ -160,12 +166,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-
-
-# STATIC_ROOT = STATIC_DIR
 
 # Default settings
 DJANGO_BOOTSTRAP_UI_THEME = 'bootswatch-paper'
