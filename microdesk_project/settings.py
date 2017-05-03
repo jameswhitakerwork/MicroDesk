@@ -18,7 +18,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = ('/var/www/static/',)
+STATICFILES_DIRS = ('/var/www/MicroDesk/static/',)
 
 
 # Static files (CSS, JavaScript, Images)
