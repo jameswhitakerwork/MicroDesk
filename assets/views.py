@@ -17,16 +17,18 @@ import csv
 # Create your views here.
 
 
+
 class Asset_Create(CreateView):
     form_class = AssetForm
     template_name = "hr/generic_form.html"
     success_url = "/assets/asset-list.html"
 
+assetcreate = permission_required('asset_access')(Asset_Create.as_view())
+
 
 class Asset_View(DetailView):
     model = Asset
     template_name = 'assets/asset_view.html'
-
 
     def get_context_data(self, **kwargs):
         ctx = super(Asset_View, self).get_context_data(**kwargs)
@@ -35,6 +37,7 @@ class Asset_View(DetailView):
         ctx['checks'] = checks
         return ctx
 
+assetview = permission_required('asset_access')(Asset_View.as_view())
 
 
 class Checkout_Create(CreateView):
@@ -77,6 +80,7 @@ class Checkin_Create(CreateView):
         return ctx
 
 
+
 class AssetTable(tables.Table):
     no = tables.Column(accessor='no')
     link = tables.LinkColumn(
@@ -92,7 +96,7 @@ class AssetTable(tables.Table):
         attrs = {'class': 'paleblue'}
 
 
-@login_required
+
 def asset_list(request):
     assets = Asset.objects.all()
     table = AssetTable(assets)

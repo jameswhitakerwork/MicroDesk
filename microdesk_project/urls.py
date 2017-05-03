@@ -21,6 +21,8 @@ from procurement import views as procurmentviews
 from assets import views as assetsviews
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.decorators import login_required, permission_required
+
 
 admin.site.site_header = 'MicroDesk Administration'
 urlpatterns = [

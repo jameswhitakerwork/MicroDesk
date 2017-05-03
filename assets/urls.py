@@ -9,7 +9,7 @@ urlpatterns = [
 
     url(
         r'^asset-create/',
-        login_required(views.Asset_Create.as_view()), name='asset_create'),
+        views.assetcreate, name='asset_create'),
 
     url(
         r'^asset-list/',
@@ -17,7 +17,7 @@ urlpatterns = [
 
     url(
         r'^asset-view/(?P<pk>[0-9]+)/',
-        login_required(views.Asset_View.as_view()), name='asset_view'),
+        views.assetview, name='asset_view'),
 
     url(
         r'^checkout-create/(?P<asset_id>[0-9]+)/',

@@ -154,6 +154,11 @@ class Staff(models.Model):
     class Meta:
         verbose_name_plural = '   STAFF'
         unique_together = ('first_name', 'last_name')
+        permissions = (
+            ('asset_access', 'Asset Access'),
+            ('procurement_access', 'Procurement Access'),
+            ('hr_access', 'HR Access'),
+        )
 
     def __unicode__(self):
         return self.first_name + ' ' + self.last_name.upper()
