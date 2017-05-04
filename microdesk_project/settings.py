@@ -32,16 +32,16 @@ MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
 # email settings
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'tmp')
 
-"""
+
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'jameswhitakerwork@gmail.com'
-EMAIL_HOST_PASSWORD = '!!!'
+EMAIL_HOST_USER = 'iommicronesiatrackerapp@gmail.com'
+EMAIL_HOST_PASSWORD = 'CookieTable!1'
 EMAIL_USE_TLS = True
-"""
+
 
 
 # site settings
