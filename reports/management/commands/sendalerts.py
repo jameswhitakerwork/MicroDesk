@@ -20,7 +20,7 @@ class Command(BaseCommand):
                 if report.days_left() == 14:
                     subject = "%s is due in 2 weeks" % report.name
                     print subject
-                    message = "%s is due on the %s. Go to %s to submit this report." % (report.name, deadline, link)
+                    message = "%s is due on %s. Go to %s to submit this report." % (report.name, deadline, link)
                     print message
                     send_mail(
                         subject,
@@ -31,7 +31,7 @@ class Command(BaseCommand):
                 if report.days_left() == 7:
                     subject = "%s is due in 1 week" % report.name
                     print subject
-                    message = "%s is due on the %s. Go to %s to submit this report." % (report.name, deadline, link)
+                    message = "%s is due on %s. Go to %s to submit this report." % (report.name, deadline, link)
                     print message
                     send_mail(
                         subject,
@@ -42,7 +42,7 @@ class Command(BaseCommand):
                 if report.days_left() == 1:
                     subject = "%s is due tomorrow" % report.name
                     print subject
-                    message = "%s is due on the %s. Go to %s to submit this report." % (report.name, deadline, link)
+                    message = "%s is due on %s. Go to %s to submit this report." % (report.name, deadline, link)
                     print message
                     send_mail(
                         subject,
@@ -51,14 +51,14 @@ class Command(BaseCommand):
                         [report.reportee]
                     )
                 if report.days_left() < 0:
-                    subject = "%s is overdue by %s days" % (report.name, str(report.days_left))
+                    subject = "%s is overdue by %s days" % (report.name, str(report.days_left()))
                     print subject
-                    message = "%s was due on the %s. Go to %s to submit this report." % (report.name, deadline, link)
+                    message = "%s was due on %s. Go to %s to submit this report." % (report.name, deadline, link)
                     print message
                     send_mail(
                         subject,
                         message,
                         'iommicronesiatrackerapp@gmail.com',
-                        ['jameswhitakerwork@gmail.com'],
+                        [report.reportee]
                         fail_silently=False
                     )
