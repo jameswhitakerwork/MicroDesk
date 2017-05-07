@@ -29,3 +29,8 @@ class Report(models.Model):
 
     def __unicode__(self):
         return self.program.__unicode__() + ' - ' + self.name 
+
+    class Meta:
+        permissions = (
+            ('download_reports', 'Can Download Reports'),
+        )

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from .models import Report
 from .forms import ReportForm, ReportSubmitForm
 from .filters import ReportFilter
@@ -54,3 +54,15 @@ def report_list(request):
         'reports/reports_list.html',
         {'table': table, 'reports': reports, 'f': f}
     )
+
+
+def report_download(request, filename):
+  path = os.expanduser('~/files/pdf/')
+  wrapper = FileWrapper(file(filename,'rb'))
+  response = HttpResponse(wrapper, content_type=mimetypes.guess_type(filename)[0])
+  response['Content-Length'] = os.path.getsize(filename)
+  response['Content-Disposition'] = "attachment; filename=" + filename
+  return response
+
+  reportdownload = permission_required('download_reports')(report_download)
+
