@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from .models import Report
 from .forms import ReportForm, ReportSubmitForm
 from .filters import ReportFilter
+
 
 import django_tables2 as tables
 from django_tables2.utils import A
@@ -30,10 +32,11 @@ class ReportTable(tables.Table):
 # Views
 
 
-class ReportCreate(CreateView):
+class ReportCreate(SuccessMessageMixin, CreateView):
     form_class = ReportForm
     template_name = 'reports/form.html'
     success_url = '/reports/'
+    success_message = '%(name)s was created successfully'
 
 class ReportSubmit(UpdateView):
     model = Report

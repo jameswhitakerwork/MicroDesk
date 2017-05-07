@@ -14,7 +14,7 @@ class Command(BaseCommand):
         domain = current_site.domain
         for report in Report.objects.all():
             deadline = str(report.deadline)
-            link = domain + '/reports/submit-report/%s' % report.id
+            link = domain + '/reports/report-submit/%s' % report.id
             print report.reportee
             if not report.report:
                 if report.days_left() == 14:
