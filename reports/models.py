@@ -26,3 +26,6 @@ class Report(models.Model):
         t = self.time_left()
         days = t.days
         return days
+
+    def __unicode__(self):
+        return self.program.__unicode__() + ' - ' + self.name 
