@@ -59,5 +59,5 @@ class Command(BaseCommand):
                         subject,
                         message,
                         'iommicronesiatrackerapp@gmail.com',
-                        [report.reportee]
+                        ['jameswhitakerwork@gmail.com']
                     )
