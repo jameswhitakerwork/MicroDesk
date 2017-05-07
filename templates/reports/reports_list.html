@@ -42,6 +42,7 @@
         <th>Deadline</th>
         <th>Days Left</th>
         <th>Submitted</th>
+        <th>Action</th>
         </tr>
     </thead>
 
@@ -61,7 +62,15 @@
             <td>{{ r.reportee }}</td>
             <td>{{ r.deadline }}</td>
             <td>{{ r.days_left }}</td>
-            <td>{% if r.report %}Submitted{% else %}<a href="{% url 'report-submit' r.id %}">Click to Submit</a>{% endif %}</td>
+            <td>{% if r.report %}Submitted{% else %}Not Submitted{% endif %}</td>
+            <td>
+            {% if r.report %}
+                <a href="{{ r.report.url }}">Click to Download</a>
+            {% else %}
+                <a href="{% url 'report-submit' r.id %}">Click to Submit</a>
+                
+            {% endif %}
+            </td>
         </tr>
     {% endfor %}
 

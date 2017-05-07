@@ -14,7 +14,7 @@ class Report(models.Model):
     deadline = models.DateField()
     reportee = models.EmailField()
     name = models.CharField(max_length=64)
-    report = models.FileField(blank=True)
+    report = models.FileField(upload_to='reports/',blank=True)
 
     def time_left(self):
         t = timezone.now().date()
