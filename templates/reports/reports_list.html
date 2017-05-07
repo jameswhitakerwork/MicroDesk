@@ -49,7 +49,7 @@
     <tbody>
     {% for r in f.qs %}
         {% if r.report %}
-        <tr class="primary">
+        <tr class="success">
         {% elif r.days_left < 0 %}
         <tr class="danger">
         {% elif r.days_left < 30 %}
