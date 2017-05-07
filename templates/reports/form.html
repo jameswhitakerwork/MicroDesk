@@ -1,0 +1,23 @@
+{% extends 'reports_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block body-content %}
+<ul class="breadcrumb">
+  <li><a href="{% url 'report-list' %}">Reports</a></li>
+  <li class="active">Form</li>
+</ul>
+
+<h2>Report Form</h2>
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+<div class="panel panel-default">
+  <div class="panel-body">
+{{ form|crispy }}
+<input type="submit" class="btn btn-primary" value="Submit" />
+  </div>
+</div>
+</form>
+<hr>
+
+{% endblock %}

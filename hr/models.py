@@ -77,9 +77,15 @@ class Duty_Station(models.Model):
 
 class Program(models.Model):
     name = models.CharField(max_length=32, unique=True)
+    desc = models.CharField(max_length=64, blank=True)
 
     def __unicode__(self):
-        return self.name
+        if self.desc:
+            return self.name + ' (' + self.desc + ')'
+        else:
+            return self.name
+
+
 
 
 class Gender(models.Model):
@@ -241,8 +247,11 @@ class Position(models.Model):
     active_contract.boolean = True
 
     def get_expected_rate(self):
-        r = getattr(self, 'expected_monthly_rate')
-        return "{:,}".format(r)
+        try:
+            r = getattr(self, 'expected_monthly_rate')
+        except:
+            r = 0
+        return "{:}".format(r)
 
 
 class Contract(models.Model):
@@ -314,7 +323,7 @@ class Contract(models.Model):
         t = timezone.now().date()
         d = self.end_date
         renew = getattr(self, 'renew_after_expires')
-        ending_soon = t > d - timedelta(days=300)
+        ending_soon = t > d - timedelta(days=30)
         contracts = Contract.objects.filter(staff=self.staff)
         next_contract = False
         for c in contracts:

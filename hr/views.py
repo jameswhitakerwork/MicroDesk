@@ -4,10 +4,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
+
 from .models import *
 from assets.models import Asset
 from .filters import *
 from .forms import StaffForm, ContractForm, PositionForm, SignatureForm
+
 import django_tables2 as tables
 from django_tables2.utils import A
 from jsignature.utils import draw_signature
@@ -35,6 +37,15 @@ class StaffTable(tables.Table):
 
 @login_required
 def index(request):
+    if request.user.has_perm('hr_access'):
+        contracts = Contract.objects.all()
+        x = 0
+        for c in contracts:
+            if c.ending_soon() == True:
+                x += 1
+        if x >0:
+            messages.warning(request, '%i contracts are about to expire.' % x)
+
     return render(request, 'hr/index.html', {})
 
 

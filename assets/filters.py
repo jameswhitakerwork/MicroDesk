@@ -37,7 +37,7 @@ class AssetFilter(django_filters.FilterSet):
         return queryset.filter(program__id=value)
 
     def filter_assettype(self, queryset, name, value):
-        return queryset.filter(descr__id=value)
+        return queryset.filter(asset_type__id=value)
 
     class Meta:
         object = Asset

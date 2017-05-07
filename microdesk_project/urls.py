@@ -17,8 +17,6 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
 from hr import views as hrviews
-from procurement import views as procurmentviews
-from assets import views as assetsviews
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.decorators import login_required, permission_required
@@ -36,6 +34,8 @@ urlpatterns = [
     url(r'^procurement/', include('procurement.urls')),
 
     url(r'^assets/', include('assets.urls')),
+
+    url(r'^reports/', include('reports.urls')),
 
     url(r'^accounts/', include('registration.backends.default.urls')),
 ]

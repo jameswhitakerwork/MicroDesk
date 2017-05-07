@@ -18,7 +18,13 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = ('/var/www/MicroDesk/static/',)
+
+LIVE = True
+
+if LIVE:
+    STATICFILES_DIRS = ('/var/www/MicroDesk/static/',)
+else:
+    STATICFILES_DIRS = (STATIC_DIR,)
 
 
 # Static files (CSS, JavaScript, Images)
@@ -74,6 +80,7 @@ INSTALLED_APPS = [
     'hr',
     'procurement',
     'assets',
+    'reports',
     # 'bootstrap3',
     'bootstrap_ui',
     'django_tables2',

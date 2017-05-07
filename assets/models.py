@@ -26,7 +26,8 @@ class Asset(models.Model):
     no = models.IntegerField(unique=True)
     sub_no = models.IntegerField(blank=True)
     capitalized = models.DateField()
-    descr = models.ForeignKey(AssetType)
+    asset_type = models.ForeignKey(AssetType)
+    descr = models.CharField(max_length=32, blank=True)
     add_descr = models.CharField(max_length=256, blank=True)
     serial = models.CharField(max_length=128, blank=True)
     office = models.ForeignKey(Office)
@@ -47,7 +48,7 @@ class Asset(models.Model):
             return None
 
     def __unicode__(self):
-        return str(self.no) + ': ' + self.descr.name
+        return str(self.no) + ': ' + self.descr
 
     class Meta:
         permissions = (
@@ -64,6 +65,6 @@ class Check(models.Model):
     staff = models.ForeignKey(Staff)
     date = models.DateField(default=timezone.now())
     check_type = models.CharField(choices=CHECK_CHOICES, max_length=8)
-    document = models.FileField(upload_to='assets/')
+    document = models.FileField(upload_to='assets/', blank=True)
 
 
