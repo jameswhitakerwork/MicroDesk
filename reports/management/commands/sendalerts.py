@@ -59,5 +59,6 @@ class Command(BaseCommand):
                         subject,
                         message,
                         'iommicronesiatrackerapp@gmail.com',
-                        ['jameswhitakerwork@gmail.com']
+                        ['jameswhitakerwork@gmail.com'],
+                        fail_silently=False
                     )
