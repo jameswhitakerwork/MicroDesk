@@ -15,6 +15,7 @@ class Command(BaseCommand):
         for report in Report.objects.all():
             deadline = str(report.deadline)
             link = domain + '/reports/submit-report/%s' % report.id
+            print report.reportee
             if not report.report:
                 if report.days_left() == 14:
                     subject = "%s is due in 2 weeks" % report.name
@@ -25,7 +26,7 @@ class Command(BaseCommand):
                         subject,
                         message,
                         'iommicronesiatrackerapp@gmail.com',
-                        (report.reportee,)
+                        [report.reportee]
                     )
                 if report.days_left() == 7:
                     subject = "%s is due in 1 week" % report.name
@@ -36,7 +37,7 @@ class Command(BaseCommand):
                         subject,
                         message,
                         'iommicronesiatrackerapp@gmail.com',
-                        (report.reportee,)
+                        [report.reportee]
                     )
                 if report.days_left() == 1:
                     subject = "%s is due tomorrow" % report.name
@@ -47,7 +48,7 @@ class Command(BaseCommand):
                         subject,
                         message,
                         'iommicronesiatrackerapp@gmail.com',
-                        (report.reportee,)
+                        [report.reportee]
                     )
                 if report.days_left() < 0:
                     subject = "%s is overdue by %s days" % (report.name, str(report.days_left))
@@ -58,5 +59,5 @@ class Command(BaseCommand):
                         subject,
                         message,
                         'iommicronesiatrackerapp@gmail.com',
-                        (report.reportee,)
+                        [report.reportee]
                     )
