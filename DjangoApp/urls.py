@@ -1,4 +1,4 @@
-"""microdesk_project URL Configuration
+"""DjangoApp URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.10/topics/http/urls/

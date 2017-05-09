@@ -2,7 +2,7 @@ import os, sys, csv, datetime
 
 proj_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # This is so Django knows where to find stuff.
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "microdesk_project.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "DjangoApp.settings")
 sys.path.append(proj_path)
 
 # This is so my local_settings.py gets loaded.
